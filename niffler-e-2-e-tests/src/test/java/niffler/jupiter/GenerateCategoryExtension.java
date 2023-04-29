@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.*;
 import static niffler.api.methods.PostCategory.postCategory;
 
 public class GenerateCategoryExtension implements ParameterResolver, BeforeEachCallback {
-    public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(GenerateCategoryExtension.class);
+    public static ExtensionContext.Namespace CATEGORY_NAMESPACE = ExtensionContext.Namespace.create(GenerateCategoryExtension.class);
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -16,7 +16,7 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
             category.setCategory(annotationCategory.category());
             category.setUsername(annotationCategory.username());
             postCategory(category);
-            context.getStore(NAMESPACE).put("category", category);
+            context.getStore(CATEGORY_NAMESPACE).put("category", category);
         }
     }
 
@@ -27,6 +27,6 @@ public class GenerateCategoryExtension implements ParameterResolver, BeforeEachC
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE).get("category", CategoryJson.class);
+        return extensionContext.getStore(CATEGORY_NAMESPACE).get("category", CategoryJson.class);
     }
 }

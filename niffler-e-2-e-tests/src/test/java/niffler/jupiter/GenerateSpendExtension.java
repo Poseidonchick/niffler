@@ -8,7 +8,7 @@ import java.util.Date;
 import static niffler.api.methods.PostAddSpend.postAddSpend;
 
 public class GenerateSpendExtension implements ParameterResolver, BeforeEachCallback {
-    public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(GenerateSpendExtension.class);
+    public static ExtensionContext.Namespace SPEND_NAMESPACE = ExtensionContext.Namespace.create(GenerateSpendExtension.class);
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -22,7 +22,7 @@ public class GenerateSpendExtension implements ParameterResolver, BeforeEachCall
             spend.setDescription(annotationSpend.description());
             spend.setSpendDate(new Date());
             postAddSpend(spend);
-            context.getStore(NAMESPACE).put("spend", spend);
+            context.getStore(SPEND_NAMESPACE).put("spend", spend);
 
         }
     }
@@ -34,6 +34,6 @@ public class GenerateSpendExtension implements ParameterResolver, BeforeEachCall
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE).get("spend", SpendJson.class);
+        return extensionContext.getStore(SPEND_NAMESPACE).get("spend", SpendJson.class);
     }
 }
